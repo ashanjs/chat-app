@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import loginImage from '../../assets/images/login.svg'
 import { Link } from 'react-router-dom'
-import AuthService from '../../services/authService'
 
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/actions/auth'
@@ -19,11 +18,6 @@ const Login = ({ history }) => {
     e.preventDefault()
 
     dispatch(login({ email, password }, history))
-    // AuthService.login({ email, password }).then(res => {
-    //   console.log(res)
-    //})
-    // console.log({ email, password })
-
   }
 
   return (

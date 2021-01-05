@@ -10,8 +10,28 @@ const Navbar = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(state => state.authReducer.user)
+
   const [showProfileOptions, setShowProfileOptions] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
+
+  const [firstName, setFirstName] = useState(user.firstName)
+  const [lastName, setLastName] = useState(user.lastName)
+  const [gender, setGender] = useState(user.gender)
+  const [email, setEmail] = useState(user.email)
+  const [password, setPassword] = useState('')
+  const [avatar, setAvatar] = useState('')
+
+  const submitForm = (e) => {
+    e.preventDefault()
+
+    const form = { firstName, lastName, gender, email, password, avatar }
+    const formData = new FormData()
+    for (const key in form) {
+      formData.append(key, form[key])
+    }
+
+    //dispatch
+  }
 
   return (
     <div id="navbar" className='card-shadow'>
@@ -33,13 +53,62 @@ const Navbar = () => {
           showProfileModal &&
           <Modal click={() => setShowProfileModal(false)}>
             <Fragment key='header'>
-              Modal Header
+              <h3 className='m-0'>Update profile</h3>
             </Fragment>
             <Fragment key='body'>
-              Modal Body
+              <form onSubmit={submitForm}>
+                <div className="input-field mb-1">
+                  <input
+                    onChange={e => setFirstName(e.target.value)}
+                    value={firstName}
+                    required='required'
+                    type='text'
+                    placeholder="First name" />
+                </div>
+                <div className="input-field mb-1">
+                  <input
+                    onChange={e => setLastName(e.target.value)}
+                    value={lastName}
+                    required='required'
+                    type='text'
+                    placeholder="Last name" />
+                </div>
+                <div className="input-field mb-1">
+                  <input
+                    onChange={e => setEmail(e.target.value)}
+                    value={email}
+                    required='required'
+                    type='text'
+                    placeholder="Email" />
+                </div>
+                <div className="input-field mb-1">
+                  <select
+                    onChange={e => setGender(e.target.value)}
+                    value={gender}
+                    required='required'>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                <div className="input-field mb-2">
+                  <input
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    required='required'
+                    type='password'
+                    placeholder="Password" />
+                </div>
+                <div className="input-field mb-2">
+                  <input
+                    onChange={e => setAvatar(e.target.files[0])}
+                    type='file' />
+                </div>
+              </form>
             </Fragment>
             <Fragment key='footer'>
-              Modal Footer
+              <button className='btn-success'>
+                UPDATE
+              </button>
             </Fragment>
           </Modal>
         }

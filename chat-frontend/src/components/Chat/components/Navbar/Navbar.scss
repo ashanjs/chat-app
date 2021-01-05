@@ -55,5 +55,25 @@
 				color: black;
 			}
 		}
+		form {
+			.input-field {
+				input,
+				select {
+					height: 40px;
+					width: 100%;
+					box-sizing: border-box;
+				}
+			}
+		}
+		.btn-success {
+			background-color: $success;
+			border: none;
+			padding: 5px;
+			width: 70px;
+			color: white;
+			border-radius: 10px;
+			cursor: pointer;
+			font-weight: 600;
+		}
 	}
 }

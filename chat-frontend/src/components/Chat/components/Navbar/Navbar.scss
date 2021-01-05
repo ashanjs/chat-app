@@ -13,6 +13,11 @@
 		color: white;
 	}
 
+	.fa-icon {
+		color: white;
+		margin: 5px;
+	}
+
 	#profile-menu {
 		display: flex;
 		justify-content: flex-end;
@@ -27,9 +32,28 @@
 			color: white;
 		}
 
-		.fa-icon {
+		img {
+			display: flex;
 			color: white;
-			margin: 5px;
+			align-self: center;
+			margin-right: 5px;
+			border-radius: 20px;
+		}
+
+		#profile-options {
+			position: absolute;
+			top: 50px;
+			border-radius: 5px;
+			padding: 0 5px;
+			right: 5px;
+			border: 1px solid #d9d9d9;
+			background-color: white;
+			z-index: 9999;
+
+			p {
+				margin: 10px 5px;
+				color: black;
+			}
 		}
 	}
 }

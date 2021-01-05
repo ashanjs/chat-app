@@ -26,7 +26,7 @@ const AuthService = {
   },
 
   logout: () => {
-
+    API.defaults.headers['Authorization'] = ''
   }
 
 }

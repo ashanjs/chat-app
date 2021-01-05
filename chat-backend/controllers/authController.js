@@ -23,6 +23,8 @@ exports.login = async (req, res) => {
     }
     // generate auth token
     const userWithToken = generateToken(user.get({ raw: true }))
+    userWithToken.avatar = user.avatar
+
     return res.send(userWithToken)
 
   } catch (e) {
@@ -37,6 +39,8 @@ exports.register = async (req, res) => {
     const user = await User.create(req.body)
 
     const userWithToken = generateToken(user.get({ raw: true }))
+
+
     return res.send(userWithToken)
 
   } catch (e) {

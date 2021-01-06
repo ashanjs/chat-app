@@ -2,8 +2,10 @@ import React, { useState, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './Navbar.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { logout } from '../../../../store/actions/auth'
+import { logout, updateProfile } from '../../../../store/actions/auth'
 import Modal from '../../../Modal/Modal'
+
+
 
 const Navbar = () => {
 
@@ -24,13 +26,15 @@ const Navbar = () => {
   const submitForm = (e) => {
     e.preventDefault()
 
-    const form = { firstName, lastName, gender, email, password, avatar }
+    const form = { firstName, lastName, gender, email, avatar }
+    if (password.length > 0) form.password = password
+
     const formData = new FormData()
     for (const key in form) {
       formData.append(key, form[key])
     }
 
-    //dispatch
+    dispatch(updateProfile(formData)).then(() => setShowProfileModal(false))
   }
 
   return (
@@ -106,7 +110,7 @@ const Navbar = () => {
               </form>
             </Fragment>
             <Fragment key='footer'>
-              <button className='btn-success'>
+              <button className='btn-success' onClick={submitForm}>
                 UPDATE
               </button>
             </Fragment>

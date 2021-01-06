@@ -13,10 +13,10 @@ exports.auth = (req, res, next) => {
   jwt.verify(token, config.appKey, (err, user) => {
 
     if (err) {
-      return res.status(401).json({ err })
+      return res.status(401).json({ error: err })
     }
     req.user = user
-    console.log(user)
+
   })
 
   next()

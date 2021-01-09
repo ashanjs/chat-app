@@ -13,9 +13,7 @@ const Chat = () => {
   const user = useSelector(state => state.authReducer.user)
 
   useEffect(() => {
-    dispatch(fetchChats())
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    dispatch(fetchChats()).then(res => console.log(res)).catch(err => console.log(err))
   }, [dispatch])
 
   return (
@@ -23,8 +21,9 @@ const Chat = () => {
       <Navbar />
       <div id="chat-wrap">
         <FriendList />
-        <Messenger />
+
       </div>
+      <Messenger />
     </div>
   );
 }

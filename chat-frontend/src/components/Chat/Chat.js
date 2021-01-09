@@ -21,7 +21,6 @@ const Chat = () => {
       <Navbar />
       <div id="chat-wrap">
         <FriendList />
-
       </div>
       <Messenger />
     </div>

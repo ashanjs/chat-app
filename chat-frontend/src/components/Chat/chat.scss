@@ -18,5 +18,25 @@
 		flex-grow: 1;
 		overflow: hidden;
 		padding: 2rem 1rem;
+
+		@media (min-width: 800px) {
+			padding: 2rem 6rem;
+			flex-direction: row;
+		}
+	}
+
+	.online-status {
+		display: inline-block;
+		border-radius: 50%;
+		width: 10px;
+		height: 10px;
+	}
+
+	.online {
+		background-color: $success;
+	}
+
+	.offline {
+		background-color: $danger;
 	}
 }

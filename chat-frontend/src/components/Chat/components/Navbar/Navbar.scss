@@ -15,7 +15,7 @@
 
 	.fa-icon {
 		color: white;
-		margin: 5px;
+		margin-left: 5px;
 	}
 
 	#profile-menu {
@@ -55,6 +55,7 @@
 				color: black;
 			}
 		}
+
 		form {
 			.input-field {
 				input,
@@ -65,6 +66,7 @@
 				}
 			}
 		}
+
 		.btn-success {
 			background-color: $success;
 			border: none;

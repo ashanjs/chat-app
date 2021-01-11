@@ -1,8 +1,9 @@
-import { FETCH_CHATS, SET_CURRENT_CHAT, FRIENDS_ONLINE, FRIEND_ONLINE, FRIEND_OFFLINE } from '../actions/chat'
+import { FETCH_CHATS, SET_CURRENT_CHAT, FRIENDS_ONLINE, FRIEND_ONLINE, FRIEND_OFFLINE, SET_SOCKET } from '../actions/chat'
 
 const initialState = {
   chats: [],
-  currentChat: {}
+  currentChat: {},
+  socket: {}
 }
 
 const chatReducer = (state = initialState, action) => {
@@ -22,7 +23,7 @@ const chatReducer = (state = initialState, action) => {
         currentChat: payload
       }
 
-    case FRIENDS_ONLINE:
+    case FRIENDS_ONLINE: {
       const chatsCopy = state.chats.map(chat => {
         return {
           ...chat,
@@ -41,10 +42,11 @@ const chatReducer = (state = initialState, action) => {
         ...state,
         chats: chatsCopy
       }
+    }
 
-    case FRIEND_ONLINE:
+    case FRIEND_ONLINE: {
       let currentChatCopy = { ...state.currentChat }
-      const chatCopy = state.chats.map(chat => {
+      const chatsCopy = state.chats.map(chat => {
         const Users = chat.Users.map(user => {
           if (user.id === parseInt(payload.id)) {
             return {
@@ -69,13 +71,14 @@ const chatReducer = (state = initialState, action) => {
       })
       return {
         ...state,
-        chats: chatCopy,
+        chats: chatsCopy,
         currentChat: currentChatCopy
       }
+    }
 
-    case FRIEND_OFFLINE:
-      let currentChatsCopy = { ...state.currentChat }
-      const chatsCopie = state.chats.map(chat => {
+    case FRIEND_OFFLINE: {
+      let currentChatCopy = { ...state.currentChat }
+      const chatsCopy = state.chats.map(chat => {
         const Users = chat.Users.map(user => {
           if (user.id === parseInt(payload.id)) {
             return {
@@ -86,7 +89,7 @@ const chatReducer = (state = initialState, action) => {
           return user
         })
 
-        if (chat.id === currentChatsCopy.id) {
+        if (chat.id === currentChatCopy.id) {
           currentChatCopy = {
             ...currentChatCopy,
             Users
@@ -100,9 +103,16 @@ const chatReducer = (state = initialState, action) => {
       })
       return {
         ...state,
-        chats: chatsCopie,
-        currentChat: currentChatsCopy
+        chats: chatsCopy,
+        currentChat: currentChatCopy
       }
+    }
+    case SET_SOCKET: {
+      return {
+        ...state,
+        socket: payload
+      }
+    }
     default:
       return state
   }

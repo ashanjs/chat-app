@@ -7,17 +7,21 @@ const initialState = {
 
 const chatReducer = (state = initialState, action) => {
   const { type, payload } = action
+
   switch (type) {
+
     case FETCH_CHATS:
       return {
         ...state,
         chats: payload
       }
+
     case SET_CURRENT_CHAT:
       return {
         ...state,
         currentChat: payload
       }
+
     case FRIENDS_ONLINE:
       const chatsCopy = state.chats.map(chat => {
         return {
@@ -38,6 +42,67 @@ const chatReducer = (state = initialState, action) => {
         chats: chatsCopy
       }
 
+    case FRIEND_ONLINE:
+      let currentChatCopy = { ...state.currentChat }
+      const chatCopy = state.chats.map(chat => {
+        const Users = chat.Users.map(user => {
+          if (user.id === parseInt(payload.id)) {
+            return {
+              ...user,
+              status: 'online'
+            }
+          }
+          return user
+        })
+
+        if (chat.id === currentChatCopy.id) {
+          currentChatCopy = {
+            ...currentChatCopy,
+            Users
+          }
+        }
+
+        return {
+          ...chat,
+          Users
+        }
+      })
+      return {
+        ...state,
+        chats: chatCopy,
+        currentChat: currentChatCopy
+      }
+
+    case FRIEND_OFFLINE:
+      let currentChatsCopy = { ...state.currentChat }
+      const chatsCopie = state.chats.map(chat => {
+        const Users = chat.Users.map(user => {
+          if (user.id === parseInt(payload.id)) {
+            return {
+              ...user,
+              status: 'offline'
+            }
+          }
+          return user
+        })
+
+        if (chat.id === currentChatsCopy.id) {
+          currentChatCopy = {
+            ...currentChatCopy,
+            Users
+          }
+        }
+
+        return {
+          ...chat,
+          Users
+        }
+      })
+      return {
+        ...state,
+        chats: chatsCopie,
+        currentChat: currentChatsCopy
+      }
     default:
       return state
   }

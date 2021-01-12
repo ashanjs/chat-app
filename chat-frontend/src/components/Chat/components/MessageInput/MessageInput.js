@@ -19,8 +19,7 @@ const MessageInput = ({ chat }) => {
   }
 
   const handleKeyDown = (e, imageUpload) => {
-    if (e.key === 'Enter')
-      sendMessage(imageUpload)
+    if (e.key === 'Enter') sendMessage(imageUpload)
   }
 
   const sendMessage = (imageUpload) => {
@@ -31,10 +30,10 @@ const MessageInput = ({ chat }) => {
       fromUser: user,
       toUserId: chat.Users.map(user => user.id),
       chatId: chat.id,
-      message: imageUpload ? image : message
+      message: imageUpload ? imageUpload : message
     }
 
-    sendMessage('')
+    setMessage('')
     setImage('')
 
     // send message with socket

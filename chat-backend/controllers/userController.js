@@ -38,14 +38,14 @@ exports.search = async (req, res) => {
     const users = await User.findAll({
       where: {
         [sequelize.Op.or]: {
-          nameConcated: sequelize.where(
+          namesConcated: sequelize.where(
             sequelize.fn('concat', sequelize.col('firstName'), ' ', sequelize.col('lastName')),
             {
-              [sequelize.Op.iLike]: `%{req.query.term}%`
+              [sequelize.Op.iLike]: `%${req.query.term}%`
             }
           ),
           email: {
-            [sequelize.Op.iLike]: `%{req.query.term}%`
+            [sequelize.Op.iLike]: `%${req.query.term}%`
           }
         },
         [sequelize.Op.not]: {

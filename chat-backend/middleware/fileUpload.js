@@ -61,7 +61,7 @@ exports.chatFile = ((req, res, next) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       const { id } = req.body
-      const dest = `uploads/user/${id}`
+      const dest = `uploads/chat/${id}`
 
       fs.access(dest, (error) => {
         // if doesn't exist

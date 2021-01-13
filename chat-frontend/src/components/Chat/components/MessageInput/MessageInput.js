@@ -19,6 +19,20 @@ const MessageInput = ({ chat }) => {
     setMessage(value)
 
     // notify other users that this user is typing something
+    const receiver = {
+      chatId: chat.id,
+      fromUser: user,
+      toUserId: chat.Users.map(user => user.id)
+    }
+    if (value.length === 1) {
+      receiver.typing = true
+      socket.emit('typing', receiver)
+    }
+
+    if (value.length === 0) {
+      receiver.typing = false
+      socket.emit('typing', receiver)
+    }
   }
 
   const handleKeyDown = (e, imageUpload) => {

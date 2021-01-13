@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Friend from '../Friend/Friend'
 import { setCurrentChat } from '../../../../store/actions/chat'
+import ChatService from '../../../../services/chatService'
 import Modal from '../../../Modal/Modal'
 import './FriendList.scss'
 
@@ -10,7 +11,7 @@ const FriendList = () => {
   const dispatch = useDispatch()
   const chats = useSelector(state => state.chatReducer.chats)
 
-  const [showFriendModal, setShowFriendModal] = useState(false)
+  const [showFriendsModal, setShowFriendsModal] = useState(false)
   const [suggestions, setSuggestions] = useState([])
 
   const openChat = (chat) => {
@@ -18,7 +19,9 @@ const FriendList = () => {
   }
 
   const searchFriends = (e) => {
-    // chat service
+    ChatService.searchUsers(e.target.value)
+      .then(res => setSuggestions(res))
+      .catch()
   }
 
   const addNewFriend = (id) => {
@@ -29,7 +32,7 @@ const FriendList = () => {
     <div id='friends' className='shadow-light'>
       <div id='title'>
         <h3 className='m-0'>Friends</h3>
-        <button>ADD</button>
+        <button onClick={() => setShowFriendsModal(true)}>ADD</button>
       </div>
 
       <hr />
@@ -44,8 +47,8 @@ const FriendList = () => {
         }
       </div>
       {
-        showFriendModal &&
-        <Modal>
+        showFriendsModal &&
+        <Modal click={() => setShowFriendsModal(false)}>
           <Fragment key='header'>
             <h3 className='m-0'>create new chat</h3>
           </Fragment>
@@ -59,7 +62,7 @@ const FriendList = () => {
             <div id='suggestions'>
               {
                 suggestions.map(user => {
-                  return <div>
+                  return <div key={user.id} className='suggestion'>
                     <p className='m-0'>{user.firstName} {user.lastName}</p>
                     <button onClick={() => addNewFriend(user.id)}>ADD</button>
                   </div>

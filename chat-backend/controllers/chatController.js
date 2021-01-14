@@ -188,6 +188,7 @@ exports.addUserToGroup = async (req, res) => {
   try {
 
     const { chatId, userId } = req.body
+
     const chat = await Chat.findOne({
       where: {
         id: chatId
@@ -208,6 +209,8 @@ exports.addUserToGroup = async (req, res) => {
         }
       ]
     })
+
+    chat.Messages.reverse()
 
     // check if already in the group
     chat.Users.forEach(user => {

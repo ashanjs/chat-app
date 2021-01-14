@@ -100,16 +100,16 @@ const SocketServer = (server) => {
 
     socket.on('add-friend', (chats) => {
       try {
-        //let online = 'offline'
+        let online = 'offline'
         if (users.has(chats[1].Users[0].id)) {
-          // online = 'online'
+          online = 'online'
           chats[0].Users[0].status = 'online'
           users.get(chats[1].Users[0].id).sockets.forEach(socket => {
             io.to(socket).emit('new-chat', chats[0])
           })
         }
         if (users.has(chats[0].Users[0].id)) {
-          chats[1].Users[0].status = 'online'
+          chats[1].Users[0].status = online
           users.get(chats[0].Users[0].id).sockets.forEach(socket => {
             io.to(socket).emit('new-chat', chats[1])
           })

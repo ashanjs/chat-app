@@ -61,6 +61,16 @@ const ChatService = {
       .catch(err => {
         throw err
       })
+  },
+
+  addFriendToGroupChat: (userId, chatId) => {
+    return API.post('/chats/add-user-to-group', { userId, chatId })
+      .then(({ data }) => {
+        return data
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
 }

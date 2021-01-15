@@ -81,6 +81,16 @@ const ChatService = {
       .catch(err => {
         throw err
       })
+  },
+
+  deleteCurrentChat: (chatId) => {
+    return API.delete(`/chats/${chatId}`)
+      .then(({ data }) => {
+        return data
+      })
+      .catch(err => {
+        throw err
+      })
   }
 
 }

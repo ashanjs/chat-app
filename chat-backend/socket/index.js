@@ -151,7 +151,22 @@ const SocketServer = (server) => {
           users.get(id).sockets.forEach(socket => {
             try {
               io.to(socket).emit('remove-user-from-chat', { chatId, userId, currentUserId })
-            } catch (e) { }
+            } catch (e) { console.log(e) }
+          })
+        }
+      })
+    })
+
+    socket.on('delete-chat', (data) => {
+      console.log(data)
+      const { chatId, notifyUsers } = data
+
+      notifyUsers.forEach(id => {
+        if (users.has(id)) {
+          users.get(id).sockets.forEach(socket => {
+            try {
+              io.to(socket).emit('delete-chat', parseInt(chatId))
+            } catch (e) { console.log(e) }
           })
         }
       })
@@ -182,7 +197,7 @@ const SocketServer = (server) => {
               users.get(chatters[i]).sockets.forEach(socket => {
                 try {
                   io.to(socket).emit('offline', user)
-                } catch (e) { }
+                } catch (e) { console.log(e) }
               })
             }
           }

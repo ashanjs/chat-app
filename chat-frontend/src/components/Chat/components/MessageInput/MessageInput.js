@@ -1,14 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, {useState, useRef, useEffect} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import ChatService from '../../../../services/chatService'
-import { incrementScroll } from '../../../../store/actions/chat'
-import { Picker } from 'emoji-mart'
+import {incrementScroll} from '../../../../store/actions/chat'
+import {Picker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 import './MessageInput.scss'
 
-const MessageInput = ({ chat }) => {
-
+const MessageInput = ({chat}) => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.authReducer.user)
   const socket = useSelector(state => state.chatReducer.socket)
@@ -20,9 +19,11 @@ const MessageInput = ({ chat }) => {
   const [message, setMessage] = useState('')
   const [image, setImage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [showNewMessageNotification, setShowNewMessageNotification] = useState(false)
+  const [showNewMessageNotification, setShowNewMessageNotification] = useState(
+    false,
+  )
 
-  const handleMessage = (e) => {
+  const handleMessage = e => {
     const value = e.target.value
     setMessage(value)
 
@@ -30,7 +31,7 @@ const MessageInput = ({ chat }) => {
     const receiver = {
       chatId: chat.id,
       fromUser: user,
-      toUserId: chat.Users.map(user => user.id)
+      toUserId: chat.Users.map(user => user.id),
     }
     if (value.length === 1) {
       receiver.typing = true
@@ -47,7 +48,7 @@ const MessageInput = ({ chat }) => {
     if (e.key === 'Enter') sendMessage(imageUpload)
   }
 
-  const sendMessage = (imageUpload) => {
+  const sendMessage = imageUpload => {
     if (message.length < 1 && !imageUpload) return
 
     const msg = {
@@ -55,7 +56,7 @@ const MessageInput = ({ chat }) => {
       fromUser: user,
       toUserId: chat.Users.map(user => user.id),
       chatId: chat.id,
-      message: imageUpload ? imageUpload : message
+      message: imageUpload ? imageUpload : message,
     }
 
     setMessage('')
@@ -78,21 +79,28 @@ const MessageInput = ({ chat }) => {
       .catch(err => console.log(err))
   }
 
-  const selectEmoji = (emoji) => {
+  const selectEmoji = emoji => {
     const startPosition = msgInput.current.selectionStart
     const endPosition = msgInput.current.selectionEnd
     const emojiLength = emoji.native.length
     const value = msgInput.current.value
-    setMessage(value.substring(0, startPosition) + emoji.native + value.substring(endPosition, value.length))
+    setMessage(
+      value.substring(0, startPosition) +
+        emoji.native +
+        value.substring(endPosition, value.length),
+    )
     msgInput.current.focus()
     msgInput.current.selectionEnd = endPosition + emojiLength
-
   }
 
   useEffect(() => {
     const msgBox = document.getElementById('msg-box')
-    if (!newMessage.seen && newMessage.chatId === chat.id && msgBox.scrollHeight !== msgBox.clientHeight) {
-      if (msgBox.scrollTop > msgBox.scrollHeight * 0.30) {
+    if (
+      !newMessage.seen &&
+      newMessage.chatId === chat.id &&
+      msgBox.scrollHeight !== msgBox.clientHeight
+    ) {
+      if (msgBox.scrollTop > msgBox.scrollHeight * 0.3) {
         dispatch(incrementScroll())
       } else {
         setShowNewMessageNotification(true)
@@ -108,69 +116,68 @@ const MessageInput = ({ chat }) => {
   }
 
   return (
-    <div id='input-container'>
-      <div id='image-upload-container'>
+    <div id="input-container">
+      <div id="image-upload-container">
         <div>
-          {
-            showNewMessageNotification
-              ? <div id='message-notification' onClick={showNewMessage}>
-                <FontAwesomeIcon icon='bell' className='fa-icon' />
-                <p className='m-0'>new message</p>
-              </div>
-              : null
-          }
+          {showNewMessageNotification ? (
+            <div id="message-notification" onClick={showNewMessage}>
+              <FontAwesomeIcon icon="bell" className="fa-icon" />
+              <p className="m-0">new message</p>
+            </div>
+          ) : null}
         </div>
-        <div id='image-upload'>
-          {
-            image.name ?
-              <div id='image-details'>
-                <p className='m-0'>{image.name}</p>
-                <FontAwesomeIcon
-                  onClick={handleImaageUpload}
-                  icon='upload'
-                  className='fa-icon'
-                />
-                <FontAwesomeIcon
-                  onClick={() => setImage('')}
-                  icon='times'
-                  className='fa-icon'
-                />
-              </div>
-              : null
-          }
+        <div id="image-upload">
+          {image.name ? (
+            <div id="image-details">
+              <p className="m-0">{image.name}</p>
+              <FontAwesomeIcon
+                onClick={handleImaageUpload}
+                icon="upload"
+                className="fa-icon"
+              />
+              <FontAwesomeIcon
+                onClick={() => setImage('')}
+                icon="times"
+                className="fa-icon"
+              />
+            </div>
+          ) : null}
           <FontAwesomeIcon
             onClick={() => fileUpload.current.click()}
             icon={['far', 'image']}
-            className='fa-icon'
+            className="fa-icon"
           />
         </div>
       </div>
-      <div id='message-input'>
+      <div id="message-input">
         <input
           ref={msgInput}
           value={message}
-          type='text'
-          placeholder='Message...'
+          type="text"
+          placeholder="Message..."
           onChange={e => handleMessage(e)}
           onKeyDown={e => handleKeyDown(e, false)}
         />
         <FontAwesomeIcon
           onClick={() => setShowEmojiPicker(!showEmojiPicker)}
           icon={['far', 'smile']}
-          className='fa-icon'
+          className="fa-icon"
         />
       </div>
-      <input id='chat-image' ref={fileUpload} type='file' onChange={(e) => setImage(e.target.files[0])}></input>
-      {
-        showEmojiPicker
-          ? <Picker
-            title='Pick your emoji..'
-            emoji='point-up'
-            style={{ position: 'absolute', bottom: '20px', right: '20px' }}
-            onSelect={selectEmoji}
-          />
-          : null
-      }
+      <input
+        id="chat-image"
+        ref={fileUpload}
+        type="file"
+        onChange={e => setImage(e.target.files[0])}
+      ></input>
+      {showEmojiPicker ? (
+        <Picker
+          title="Pick your emoji.."
+          emoji="point-up"
+          style={{position: 'absolute', bottom: '20px', right: '20px'}}
+          onSelect={selectEmoji}
+        />
+      ) : null}
     </div>
   )
 }

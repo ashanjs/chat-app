@@ -1,13 +1,13 @@
 import axios from 'axios'
 import store from '../store'
-import { logout } from '../store/actions/auth'
+import {logout} from '../store/actions/auth'
 
 const API = axios.create({
   baseURL: 'http://127.0.0.1:3000',
   headers: {
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')} || ''`
-  }
+    Accept: 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')} || ''`,
+  },
 })
 
 API.interceptors.response.use(
@@ -24,8 +24,7 @@ API.interceptors.response.use(
         throw err
       }
     }
-  }
+  },
 )
-
 
 export default API

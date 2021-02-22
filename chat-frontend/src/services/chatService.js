@@ -1,10 +1,9 @@
 import API from './api'
 
 const ChatService = {
-
   fetchChats: () => {
     return API.get('/chats')
-      .then(({ data }) => {
+      .then(({data}) => {
         return data
       })
       .catch(err => {
@@ -12,13 +11,12 @@ const ChatService = {
       })
   },
 
-
-  uploadImage: (data) => {
+  uploadImage: data => {
     const headers = {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }
     return API.post('/chats/upload-image', data, headers)
-      .then(({ data }) => {
+      .then(({data}) => {
         return data.url
       })
       .catch(err => {
@@ -29,10 +27,11 @@ const ChatService = {
   paginateMessages: (id, page) => {
     return API.get('/chats/messages', {
       params: {
-        id, page
-      }
+        id,
+        page,
+      },
     })
-      .then(({ data }) => {
+      .then(({data}) => {
         return data
       })
       .catch(err => {
@@ -40,22 +39,22 @@ const ChatService = {
       })
   },
 
-  searchUsers: (term) => {
+  searchUsers: term => {
     return API.get('/users/search-users', {
       params: {
-        term
-      }
+        term,
+      },
     })
-      .then(({ data }) => {
+      .then(({data}) => {
         return data
       })
       .catch(err => {
         throw err
       })
   },
-  createChat: (partnerId) => {
-    return API.post('/chats/create', { partnerId })
-      .then(({ data }) => {
+  createChat: partnerId => {
+    return API.post('/chats/create', {partnerId})
+      .then(({data}) => {
         return data
       })
       .catch(err => {
@@ -64,8 +63,8 @@ const ChatService = {
   },
 
   addFriendToGroupChat: (userId, chatId) => {
-    return API.post('/chats/add-user-to-group', { userId, chatId })
-      .then(({ data }) => {
+    return API.post('/chats/add-user-to-group', {userId, chatId})
+      .then(({data}) => {
         return data
       })
       .catch(err => {
@@ -73,9 +72,9 @@ const ChatService = {
       })
   },
 
-  leaveCurrentChat: (chatId) => {
-    return API.post('/chats/leave-current-chat', { chatId })
-      .then(({ data }) => {
+  leaveCurrentChat: chatId => {
+    return API.post('/chats/leave-current-chat', {chatId})
+      .then(({data}) => {
         return data
       })
       .catch(err => {
@@ -83,16 +82,15 @@ const ChatService = {
       })
   },
 
-  deleteCurrentChat: (chatId) => {
+  deleteCurrentChat: chatId => {
     return API.delete(`/chats/${chatId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         return data
       })
       .catch(err => {
         throw err
       })
-  }
-
+  },
 }
 
 export default ChatService

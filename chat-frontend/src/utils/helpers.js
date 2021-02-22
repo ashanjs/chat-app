@@ -1,3 +1,3 @@
-export const userStatus = (user) => {
+export const userStatus = user => {
   return user.status === 'online' ? 'online' : 'offline'
 }

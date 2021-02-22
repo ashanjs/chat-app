@@ -12,27 +12,26 @@ import {
   CREATE_CHAT,
   ADD_USER_TO_GROUP,
   LEAVE_CURRENT_CHAT,
-  DELETE_CURRENT_CHAT
+  DELETE_CURRENT_CHAT,
 } from '../actions/chat'
 
 const initialState = {
   chats: [],
   currentChat: {},
   socket: {},
-  newMessage: { chatId: null, seen: null },
+  newMessage: {chatId: null, seen: null},
   scrollBottom: 0,
-  senderTyping: { typing: false }
+  senderTyping: {typing: false},
 }
 
 const chatReducer = (state = initialState, action) => {
-  const { type, payload } = action
+  const {type, payload} = action
 
   switch (type) {
-
     case FETCH_CHATS:
       return {
         ...state,
-        chats: payload
+        chats: payload,
       }
 
     case SET_CURRENT_CHAT:
@@ -40,7 +39,7 @@ const chatReducer = (state = initialState, action) => {
         ...state,
         currentChat: payload,
         scrollBottom: state.scrollBottom + 1,
-        newMessage: { chatId: null, seen: null }
+        newMessage: {chatId: null, seen: null},
       }
 
     case FRIENDS_ONLINE: {
@@ -51,27 +50,27 @@ const chatReducer = (state = initialState, action) => {
             if (payload.includes(user.id)) {
               return {
                 ...user,
-                status: 'online'
+                status: 'online',
               }
             }
             return user
-          })
+          }),
         }
       })
       return {
         ...state,
-        chats: chatsCopy
+        chats: chatsCopy,
       }
     }
 
     case FRIEND_ONLINE: {
-      let currentChatCopy = { ...state.currentChat }
+      let currentChatCopy = {...state.currentChat}
       const chatsCopy = state.chats.map(chat => {
         const Users = chat.Users.map(user => {
           if (user.id === parseInt(payload.id)) {
             return {
               ...user,
-              status: 'online'
+              status: 'online',
             }
           }
           return user
@@ -80,30 +79,30 @@ const chatReducer = (state = initialState, action) => {
         if (chat.id === currentChatCopy.id) {
           currentChatCopy = {
             ...currentChatCopy,
-            Users
+            Users,
           }
         }
 
         return {
           ...chat,
-          Users
+          Users,
         }
       })
       return {
         ...state,
         chats: chatsCopy,
-        currentChat: currentChatCopy
+        currentChat: currentChatCopy,
       }
     }
 
     case FRIEND_OFFLINE: {
-      let currentChatCopy = { ...state.currentChat }
+      let currentChatCopy = {...state.currentChat}
       const chatsCopy = state.chats.map(chat => {
         const Users = chat.Users.map(user => {
           if (user.id === parseInt(payload.id)) {
             return {
               ...user,
-              status: 'offline'
+              status: 'offline',
             }
           }
           return user
@@ -112,55 +111,54 @@ const chatReducer = (state = initialState, action) => {
         if (chat.id === currentChatCopy.id) {
           currentChatCopy = {
             ...currentChatCopy,
-            Users
+            Users,
           }
         }
 
         return {
           ...chat,
-          Users
+          Users,
         }
       })
       return {
         ...state,
         chats: chatsCopy,
-        currentChat: currentChatCopy
+        currentChat: currentChatCopy,
       }
     }
     case SET_SOCKET: {
       return {
         ...state,
-        socket: payload
+        socket: payload,
       }
     }
 
     case RECEIVED_MESSAGE: {
-      const { userId, message } = payload
-      let currentChatCopy = { ...state.currentChat }
-      let newMessage = { ...state.newMessage }
+      const {userId, message} = payload
+      let currentChatCopy = {...state.currentChat}
+      let newMessage = {...state.newMessage}
       let scrollBottom = state.scrollBottom
 
       const chatsCopy = state.chats.map(chat => {
         if (message.chatId === chat.id) {
-
           if (message.User.id === userId) {
             scrollBottom++
           } else {
             newMessage = {
               chatId: chat.id,
-              seen: false
+              seen: false,
             }
           }
 
           if (message.chatId === currentChatCopy.id) {
             currentChatCopy = {
               ...currentChatCopy,
-              Messages: [...currentChatCopy.Messages, ...[message]]
+              Messages: [...currentChatCopy.Messages, ...[message]],
             }
           }
           return {
             ...chat,
-            Messages: [...chat.Messages, ...[message]]
+            Messages: [...chat.Messages, ...[message]],
           }
         }
         return chat
@@ -172,7 +170,7 @@ const chatReducer = (state = initialState, action) => {
           chats: chatsCopy,
           currentChat: currentChatCopy,
           newMessage,
-          senderTyping: { typing: false }
+          senderTyping: {typing: false},
         }
       }
       return {
@@ -181,7 +179,7 @@ const chatReducer = (state = initialState, action) => {
         currentChat: currentChatCopy,
         newMessage,
         scrollBottom,
-        senderTyping: { typing: false }
+        senderTyping: {typing: false},
       }
     }
     case SENDER_TYPING: {
@@ -189,34 +187,33 @@ const chatReducer = (state = initialState, action) => {
         return {
           ...state,
           senderTyping: payload,
-          scrollBottom: state.scrollBottom + 1
+          scrollBottom: state.scrollBottom + 1,
         }
       }
       return {
         ...state,
-        senderTyping: payload
+        senderTyping: payload,
       }
     }
 
     case PAGINATE_MESSAGES: {
-      const { messages, id, pagination } = payload
-      let currentChatCopy = { ...state.currentChat }
+      const {messages, id, pagination} = payload
+      let currentChatCopy = {...state.currentChat}
 
       const chatsCopy = state.chats.map(chat => {
-
         if (chat.id === id) {
           const shifted = [...messages, ...chat.Messages]
 
           currentChatCopy = {
             ...currentChatCopy,
             Messages: shifted,
-            Pagination: pagination
+            Pagination: pagination,
           }
 
           return {
             ...chat,
             Messages: shifted,
-            Pagination: pagination
+            Pagination: pagination,
           }
         }
         return chat
@@ -225,7 +222,7 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         chats: chatsCopy,
-        currentChat: currentChatCopy
+        currentChat: currentChatCopy,
       }
     }
 
@@ -233,17 +230,17 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         scrollBottom: state.scrollBottom + 1,
-        newMessage: { chatId: null, seen: true }
+        newMessage: {chatId: null, seen: true},
       }
 
     case CREATE_CHAT:
       return {
         ...state,
-        chats: [...state.chats, ...[payload]]
+        chats: [...state.chats, ...[payload]],
       }
 
     case ADD_USER_TO_GROUP: {
-      const { chat, chatters } = payload
+      const {chat, chatters} = payload
 
       let exists = false
       const chatsCopy = state.chats.map(chatState => {
@@ -251,73 +248,66 @@ const chatReducer = (state = initialState, action) => {
           exists = true
           return {
             ...chatState,
-            Users: [...chatState.Users, ...chatters]
+            Users: [...chatState.Users, ...chatters],
           }
         }
         return chatState
       })
 
-      if (!exists)
-        chatsCopy.push(chat)
+      if (!exists) chatsCopy.push(chat)
 
-      let currentChatCopy = { ...state.currentChat }
+      let currentChatCopy = {...state.currentChat}
 
       if (Object.keys(currentChatCopy).length > 0) {
         if (chat.id === currentChatCopy.id) {
           currentChatCopy = {
             ...state.currentChat,
-            Users: [
-              ...state.currentChat.Users,
-              ...chatters
-            ]
+            Users: [...state.currentChat.Users, ...chatters],
           }
         }
       }
       return {
         ...state,
         chats: chatsCopy,
-        currentChat: currentChatCopy
+        currentChat: currentChatCopy,
       }
-
     }
 
     case LEAVE_CURRENT_CHAT: {
-      const { chatId, userId, currentUserId } = payload
+      const {chatId, userId, currentUserId} = payload
 
       if (userId === currentUserId) {
-
         const chatsCopy = state.chats.filter(chat => chat.id !== chatId)
 
         return {
           ...state,
           chats: chatsCopy,
-          currentChat: state.currentChat.id === chatId ? {} : state.currentChat
+          currentChat: state.currentChat.id === chatId ? {} : state.currentChat,
         }
       } else {
-
         const chatsCopy = state.chats.map(chat => {
           if (chatId === chat.id) {
             return {
               ...chat,
-              Users: chat.Users.filter(user => user.id !== userId)
+              Users: chat.Users.filter(user => user.id !== userId),
             }
           }
 
           return chat
         })
 
-        let currentChatCopy = { ...state.currentChat }
+        let currentChatCopy = {...state.currentChat}
 
         if (currentChatCopy.id === chatId) {
           currentChatCopy = {
             ...currentChatCopy,
-            Users: currentChatCopy.Users.filter(user => user.id !== userId)
+            Users: currentChatCopy.Users.filter(user => user.id !== userId),
           }
         }
         return {
           ...state,
           chats: chatsCopy,
-          currentChat: currentChatCopy
+          currentChat: currentChatCopy,
         }
       }
     }
@@ -326,7 +316,7 @@ const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         chats: state.chats.filter(chat => chat.id !== payload),
-        currentChat: state.currentChat.id === payload ? {} : state.currentChat
+        currentChat: state.currentChat.id === payload ? {} : state.currentChat,
       }
     }
     default:

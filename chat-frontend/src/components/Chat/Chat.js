@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, {useEffect} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import useSocket from './hooks/socketConnect'
 import Navbar from './components/Navbar/Navbar'
 import FriendList from './components/FriendList/FriendList'
@@ -8,7 +8,6 @@ import Messenger from './components/Messenger/Messenger'
 import './chat.scss'
 
 const Chat = () => {
-
   const dispatch = useDispatch()
   const user = useSelector(state => state.authReducer.user)
 
@@ -22,7 +21,7 @@ const Chat = () => {
         <Messenger />
       </div>
     </div>
-  );
+  )
 }
 
 export default Chat

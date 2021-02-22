@@ -1,7 +1,7 @@
-import { userStatus } from "../helpers"
+import {userStatus} from '../helpers'
 
 const testUser = {
-  status: 'online'
+  status: 'online',
 }
 
 test('user status', () => {

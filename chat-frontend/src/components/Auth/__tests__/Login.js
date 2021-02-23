@@ -1,9 +1,10 @@
 import React from 'react'
-import {render} from '../../../../test/chatApp-test-utils'
+import {render} from 'chatApp-test-utils'
 import Login from '../Login'
 
 test('render login', () => {
   const {container} = render(<Login />)
+  debugger
   expect(container.firstChild).toMatchInlineSnapshot(`
     <div
       id="auth-container"

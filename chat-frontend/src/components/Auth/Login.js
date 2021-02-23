@@ -8,7 +8,7 @@ import {login} from '../../store/actions/auth'
 import './Auth.scss'
 
 const Login = ({history}) => {
-  //const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -59,7 +59,7 @@ const Login = ({history}) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
